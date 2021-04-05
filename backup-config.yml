@@ -1,0 +1,23 @@
+---
+
+- name: Backup Cisco Switch Configuration
+  hosts: routers
+  gather_facts: false
+  connection: network_cli
+  vars:
+    ansible_date_time: "{{ lookup('pipe', 'date +%Y%m%d-%H%M') }}"
+  
+  tasks:
+    - name: Ansible date fact example
+      debug:
+        var=ansible_date_time
+    
+    - name: backup the config
+      ios_config:
+        backup: yes
+      register: backup_config
+    
+    - name: save output to /etc/ansible/backups
+      copy: 
+        src: "{{ backup_config.backup_path }}"
+        dest: "/home/hazel/code/ansible-cisco/backups/show_run_{{inventory_hostname }}_{{ ansible_date_time }}.txt"
