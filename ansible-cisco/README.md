@@ -1,7 +1,7 @@
 # ansible-cisco-example
-
-> :warning: **Please change the variable as your environments**
-
+:::info
+Please change the variable as your environments
+:::
 
 ### How to execute these playbooks
 ansible-playbook ${PLAYBOOK_PATH} -i ${INVENTORY_PATH}
