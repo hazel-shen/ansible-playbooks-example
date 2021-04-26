@@ -3,6 +3,6 @@
   tasks:
   - ipmi_power:
       name: ipmi.hazel.internal
-      user: "{{ IPMI_USERNAME }}"
-      password: "{{ IPMI_PASSWORD }}"
+      user: ADMIN
+      password: ADMIN
       state: "on"

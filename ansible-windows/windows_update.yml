@@ -1,0 +1,36 @@
+---
+- name: Install updates from Internet as baseline
+  hosts: windows
+  gather_facts: no
+  tasks:
+    - name: Install needed updates
+      win_updates:
+        server_selection: windows_update
+        category_names:
+        - SecurityUpdates
+        - CriticalUpdates
+        - ServicePacks
+        - UpdateRollups
+        blacklist: "{{ inputs.blacklist }}"
+        reboot: no
+
+    - name: Install whitelist updates
+      win_updates:
+        server_selection: windows_update
+        category_names:
+        - SecurityUpdates
+        - CriticalUpdates
+        - ServicePacks
+        - UpdateRollups
+        - Application
+        - Connectors
+        - DefinitionUpdates
+        - DeveloperKits
+        - FeaturePacks
+        - Guidance
+        - Tools
+        - Updates
+        whitelist: "{{ inputs.whitelist }}"
+        blacklist: "{{ inputs.blacklist }}"
+        reboot: no
+      when: inputs.whitelist | length > 0
