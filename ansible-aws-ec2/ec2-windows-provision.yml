@@ -1,0 +1,33 @@
+- name: Provision one en2 windows 2016 server with mssql
+  gather_facts: false
+  hosts: localhost
+  connection: local
+  vars_files:
+    - ec2_vars/env.yml
+  tasks:
+    - name: Launch instance
+      local_action:
+        module: ec2
+        region: "{{ REGION }}"
+        image: "{{ AMI_ID }}"
+        aws_access_key: "{{ AWS_ACCESS_KEY }}"
+        aws_secret_key: "{{ AWS_SECRET_KEY }}"
+        instance_type: "{{ INSTANCE_TYPE }}"
+        vpc_subnet_id: "{{ VPC_SUBNET_ID }}"
+        count: "1"
+        user_data: "<powershell>
+  Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force\n
+  $storageDir = $pwd\n
+  $webclient = New-Object System.Net.WebClient\n
+  $url = \"https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1\"\n
+  $file = \"C:\\Program Files\\Amazon\\Ec2ConfigService\\Scripts\\ConfigureRemotingForAnsible.ps1\"\n
+  $webclient.DownloadFile($url,$file)\n
+  $VerbosePreference=\"Continue\"\n
+  & $file\n
+  $user=[adsi]\"WinNT://localhost/Administrator,user\"\n
+  $user.SetPassword(\"{{ WINDOWS_ADMIN_PASSWORD }}\")\n
+</powershell>"
+        wait: true
+      register: ec2
+
+
