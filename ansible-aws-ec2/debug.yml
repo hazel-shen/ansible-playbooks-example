@@ -1,0 +1,7 @@
+- name: Show debug message
+  gather_facts: false
+  hosts: localhost
+  connection: local
+  tasks:
+  - debug:
+      msg: "Please check the information"  

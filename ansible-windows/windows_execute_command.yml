@@ -1,0 +1,9 @@
+---
+- name: Execute Command and PowerShell script
+  hosts: windows 
+  tasks:
+
+  - win_shell: echo "Test string.."
+    args:
+      executable: cmd
+  - win_shell: C:\Users\hazel\Downloads\HelloWorld.ps1
